@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Add Event</h1>
+<form method="post" action="{% url 'event_add' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="event-title" class="form-label">Event Title</label>
+                <input type="text" class="form-control" id="event-title" name="title" required>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="thumbnail" class="form-label">Thumbnail</label>
+                <input type="file" class="form-control" id="thumbnail" name="thumbnail">
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Event Description</label>
+      <textarea name="description" id="description" cols="5" rows="5" class="form-control" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <textarea name="location" id="location" cols="2" rows="2" class="form-control" name="location"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="event-date" class="form-label">Event Date</label>
+                <input type="date" class="form-control" id="event-date" name="event_date">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="event-time" class="form-label">Event Time</label>
+                <input type="time" class="form-control" id="event-time" name="event_time">
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="is_active">
+        <label class="form-check-label" for="is_active" name="is_active">Is Open</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</form>
+{% endblock %}

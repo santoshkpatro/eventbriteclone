@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center my-5">Events</h1>
+<div class="row">
+    {% for event in events %}
+        <div class="col-4">
+            <div class="card">
+                {% if event.thumbnail %}
+                    <img src="{{event.thumbnail.url}}" class="card-img-top" alt="NA" height="300" width="100">
+                {% else %}
+                    <img src="https://via.placeholder.com/100" class="card-img-top" alt="NA" height="300" width="100">
+                {% endif %}
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-9">
+                        <h5 class="card-title">{{ event.title }}</h5>   
+                      </div>
+                      <div class="col-3">
+                          {% if not request.user.is_authenticated %}
+                            <a href="{% url 'event_like' event.id %}?next={{request.path}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                </svg>
+                            </a>
+                          {% else %}
+                            {% if request.user in event.likes.all %}
+                                <a href="{% url 'event_like_remove' event.id %}?next={{request.path}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                    </svg>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'event_like' event.id %}?next={{request.path}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                    </svg>
+                                </a>
+                            {% endif %}
+                          {% endif %}
+                      </div>
+                  </div>
+                  <h6 class="card-subtitle mb-2 text-muted">Organizer: {{ event.user.username }}</h6>
+                  <p class="card-text">{{ event.description | truncatechars:100 }}</p>
+                  <div class="d-grid gap-2">
+                    <a class="btn btn-primary" href="{% url 'event_details' event.id %}" type="button">View Details</a>
+                    <button class="btn btn-success" type="button">Register</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
